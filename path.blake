@@ -1,0 +1,6 @@
+return {
+	type = 'lua_module',
+	files = { "path.lua" },
+}
+
+-- vi: ft=lua
