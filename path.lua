@@ -1,11 +1,22 @@
 local os = require 'os'
 local table = require 'table'
 
-module(... or 'test', package.seeall)
+local _M = {}
+local _NAME = ... or 'test'
 
 local slash = '/'
 if os.getenv'OS'=='Windows_NT' then
 	slash = '\\'
+end
+
+local newproxy = newproxy or function(proto)
+	if proto==true then
+		return setmetatable({}, {})
+	elseif proto then
+		return setmetatable({}, getmetatable(proto))
+	else
+		return {}
+	end
 end
 
 local prototype = newproxy(true)
@@ -27,7 +38,7 @@ function _M.type(value)
 	return data[value] and 'path' or type(value)
 end
 
-function split(s)
+function _M.split(s)
 	if type(s)~='string' then error("bad argument #1 to split (string expected, got "..type(s)..")", 2) end
 	local this = {}
 	if s then
@@ -230,11 +241,12 @@ function mt:__eq(other)
 	return true
 end
 
-local function pack(...)
+local pack = table.pack or function(...)
 	return {n=select('#', ...), ...}
 end
+local unpack = table.unpack or unpack
 
-function install()
+function _M.install()
 	local function wrapf(f, resultpath)
 		return function(...)
 			local args = pack(...)
@@ -272,11 +284,12 @@ function install()
 end
 
 if _NAME=='test' then
-	function expect(expectation, value, ...)
+	local function expect(expectation, value, ...)
 		if value~=expectation then
 			error("expectation failed! "..tostring(expectation).." expected, got "..tostring(value), 2)
 		end
 	end
+	local split = _M.split
 	
 	local s = [[/foo/bar]]
 	local p = split(s)
