@@ -212,7 +212,7 @@ A `path` object may have an optional root. This root is a string that can be eit
 
 ### path:sub (i [, j])
 
-Returns a path containing the components of `path` in the range [i-j]. If `j` is ommited, it is the length of the `path`. If `i` is greater or equal to 2, the resulting path is relative and has no root. Otherwise it keeps the same `root` and `absolute` flag as `path`.
+Returns a path containing the components of `path` in the range [i-j]. If `j` is omitted, it is the length of the `path`. If `i` is greater or equal to 2, the resulting path is relative and has no root. Otherwise it keeps the same `root` and `absolute` flag as `path`.
 
 ### path1 == path2
 
