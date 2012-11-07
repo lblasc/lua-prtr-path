@@ -176,9 +176,11 @@ The `pathlib.install` function will install the path module inside the following
 
 `path.wstring` is a string representation of the `path` object in Windows format, with backslashes as directory separators.
 
-### path.file
+### path.leaf, path.file
 
 `path.file` is the last component of a path, as a `string`. The path library is disconnected from any underlying file system, so this name may represent either a file or a directory (or nothing).
+
+`path.leaf` is an alias for `path.file`.
 
 ### path.parent, path.dir
 

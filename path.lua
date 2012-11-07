@@ -132,6 +132,7 @@ function getters:file()
 	local this = data[self]
 	return this[#this]
 end
+getters.leaf = getters.file
 
 function getters:parent()
 	local this = data[self]

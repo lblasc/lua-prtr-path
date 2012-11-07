@@ -127,9 +127,11 @@ end
 
 <p><code>path.wstring</code> is a string representation of the <code>path</code> object in Windows format, with backslashes as directory separators.</p>
 
-<h3>path.file</h3>
+<h3>path.leaf, path.file</h3>
 
 <p><code>path.file</code> is the last component of a path, as a <code>string</code>. The path library is disconnected from any underlying file system, so this name may represent either a file or a directory (or nothing).</p>
+
+<p><code>path.leaf</code> is an alias for <code>path.file</code>.</p>
 
 <h3>path.parent, path.dir</h3>
 
@@ -163,7 +165,7 @@ end
 
 <h3>path:sub (i [, j])</h3>
 
-<p>Returns a path containing the components of <code>path</code> in the range [i-j]. If <code>j</code> is ommited, it is the length of the <code>path</code>. If <code>i</code> is greater or equal to 2, the resulting path is relative and has no root. Otherwise it keeps the same <code>root</code> and <code>absolute</code> flag as <code>path</code>.</p>
+<p>Returns a path containing the components of <code>path</code> in the range [i-j]. If <code>j</code> is omitted, it is the length of the <code>path</code>. If <code>i</code> is greater or equal to 2, the resulting path is relative and has no root. Otherwise it keeps the same <code>root</code> and <code>absolute</code> flag as <code>path</code>.</p>
 
 <h3>path1 == path2</h3>
 
@@ -196,7 +198,7 @@ local path = P(os.getenv('HOME)) / '.conf' / appname / appname..'.cfg'
 </div>
 
 <div class="chapter" id="footer">
-<small>Last update: 2012-11-06 23:35:29 GMT</small>
+<small>Last update: 2012-11-07 02:04:05 GMT</small>
 </div>
 </body>
 </html>
