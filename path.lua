@@ -639,3 +639,4 @@ if _NAME=='test' then
 --	print "all tests succeeded"
 end
 
+return _M
