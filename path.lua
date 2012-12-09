@@ -217,11 +217,13 @@ end
 function methods:sub(i, j)
 	local this = data[self]
 	local p = {}
-	if i<=1 then
+	if i <= 0 then
+		i = 1
 		p.root = this.root
 		p.absolute = this.absolute
 	end
-	if j==nil then j = #this end
+	if j == nil then j = #this end
+	if j < 0 then j = #this + 1 + j end
 	for k=i,j do
 		table.insert(p, this[k])
 	end
@@ -577,7 +579,17 @@ if _NAME=='test' then
 	expect(nil, p[3])
 	assert(p.parent)
 	expect([[D:\baz]], p.parent.wstring)
-
+	
+	local s1,s2 = [[C:\foo\bar]],[[D:\baz\baf]]
+	local p1,p2 = split(s1),split(s2)
+	expect([[C:\]], p1:sub(0, 0).wstring)
+	expect([[foo]], p1:sub(1, 1).wstring)
+	expect([[foo/bar]], p1:sub(1, 2).ustring)
+	expect([[baz/baf]], p2:sub(1).ustring)
+	expect([[D:/baz]], p2:sub(0,1).ustring)
+	expect([[baz/baf]], p2:sub(1, -1).ustring)
+	expect([[baz]], p2:sub(1, -2).ustring)
+	
 	expect('foo/bar', (split'foo'    / split'bar'   ).ustring)
 --	print ((split'foo'    / split'D:bar' ).ustring) -- ambiguous D:foo/bar or D:bar
 	expect('/bar', (split'foo'    / split'/bar'  ).ustring)
@@ -636,7 +648,7 @@ if _NAME=='test' then
 	local p2 = _M.split[[foo/bar]]
 	assert(p1 == p2)
 
---	print "all tests succeeded"
+	print "all tests succeeded"
 end
 
 return _M

@@ -215,7 +215,7 @@ A `path` object may have an optional root. This root is a string that can be eit
 
 ### path:sub (i [, j])
 
-Returns a path containing the components of `path` in the range [i-j]. If `j` is omitted, it is the length of the `path`. If `i` is greater or equal to 2, the resulting path is relative and has no root. Otherwise it keeps the same `root` and `absolute` flag as `path`.
+Returns a path containing the components of `path` in the range [i-j]. If `j` is omitted, it is the length of the `path`. If `j` is negative, it is considered as an index from the end of the path (-1 being the last component, -2 the one before that, etc.). If `i` is greater or equal to 1, the resulting path is relative and has no root. To keep the same `root` and `absolute` flag as `path`, `i` must be 0 or negative. Therefore a convenient way to get the relative part of an absolute path is to call `path:sub(1)`.
 
 ### path1 == path2
 

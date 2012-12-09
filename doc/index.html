@@ -167,7 +167,7 @@ end
 
 <h3>path:sub (i [, j])</h3>
 
-<p>Returns a path containing the components of <code>path</code> in the range [i-j]. If <code>j</code> is omitted, it is the length of the <code>path</code>. If <code>i</code> is greater or equal to 2, the resulting path is relative and has no root. Otherwise it keeps the same <code>root</code> and <code>absolute</code> flag as <code>path</code>.</p>
+<p>Returns a path containing the components of <code>path</code> in the range [i-j]. If <code>j</code> is omitted, it is the length of the <code>path</code>. If <code>j</code> is negative, it is considered as an index from the end of the path (-1 being the last component, -2 the one before that, etc.). If <code>i</code> is greater or equal to 1, the resulting path is relative and has no root. To keep the same <code>root</code> and <code>absolute</code> flag as <code>path</code>, <code>i</code> must be 0 or negative. Therefore a convenient way to get the relative part of an absolute path is to call <code>path:sub(1)</code>.</p>
 
 <h3>path1 == path2</h3>
 
@@ -200,7 +200,7 @@ local path = P(os.getenv('HOME)) / '.conf' / appname / appname..'.cfg'
 </div>
 
 <div class="chapter" id="footer">
-<small>Last update: 2012-12-09 20:14:23 GMT</small>
+<small>Last update: 2012-12-09 20:20:53 GMT</small>
 </div>
 </body>
 </html>
