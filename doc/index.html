@@ -28,7 +28,7 @@ lang="en">
 
 <h2>Support</h2>
 
-<p>All support is done through the <a href="http://www.lua.org/lua-l.html">Lua mailing list</a>. If the traffic becomes too important a specialized mailing list will be created.</p>
+<p>All support is done through the <a href="http://www.lua.org/lua-l.html">Lua mailing list</a>.</p>
 
 <p>Feel free to ask for further developments. I can't guarantee that I'll develop everything you ask, but I want my code to be as useful as possible, so I'll do my best to help you. You can also send me request or bug reports (for code and documentation) directly at <a href="mailto:jerome.vuarand@gmail.com">jerome.vuarand@gmail.com</a>.</p>
 
@@ -72,7 +72,7 @@ lang="en">
 
 <p>Note that in the examples here we use the name <code>pathlib</code> in the code to reference the module itself and <code>path</code> to reference the path datatype. This is to avoid ambiguities. The module name however is <code>"path"</code>, and that name should be passed to <code>require</code> (as shown above).</p>
 
-<p>All <code>path</code> objects are immutable, but they are not interned like Lua strings, and such the semantics when used as keys in tables differ. To create a path object, one can either call the function <code>pathlib.split</code> to split a string, or assemble new paths from existing paths using the / operator. An empty <code>path</code> object is predefined with the name <code>pathlib.empty</code>.</p>
+<p>All <code>path</code> objects are immutable, but they are not interned like Lua strings, and as such the semantics when used as keys in tables differ. To create a path object, one can either call the function <code>pathlib.split</code> to split a string, or assemble new paths from existing paths using the / operator. An empty <code>path</code> object is predefined with the name <code>pathlib.empty</code>.</p>
 
 <h3>pathlib.split ( string )</h3>
 
@@ -81,9 +81,11 @@ lang="en">
 <p>If the path string following the root starts with a slash or a backslash, it is marked as absolute (UNC paths are always absolute).</p>
 
 <pre><code>local lua = pathlib.split([[/usr/bin/lua]])
+</code></pre>
 
-local P = pathlib.split
+<p>A convention used in the rest of this manual is to use the alias <code>P</code> for pathlib.split. It is defined as follows:</p>
 
+<pre><code>local P = pathlib.split
 local explorer = P[[C:\Windows\explorer.exe]]
 </code></pre>
 
@@ -198,7 +200,7 @@ local path = P(os.getenv('HOME)) / '.conf' / appname / appname..'.cfg'
 </div>
 
 <div class="chapter" id="footer">
-<small>Last update: 2012-11-07 02:04:05 GMT</small>
+<small>Last update: 2012-12-09 20:14:23 GMT</small>
 </div>
 </body>
 </html>

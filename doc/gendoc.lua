@@ -89,7 +89,7 @@ The name path is not original, but it reflects the purpose of the library. The p
 
 ## Support
 
-All support is done through the [Lua mailing list](http://www.lua.org/lua-l.html). If the traffic becomes too important a specialized mailing list will be created.
+All support is done through the [Lua mailing list](http://www.lua.org/lua-l.html).
 
 Feel free to ask for further developments. I can't guarantee that I'll develop everything you ask, but I want my code to be as useful as possible, so I'll do my best to help you. You can also send me request or bug reports (for code and documentation) directly at [jerome.vuarand@gmail.com](mailto:jerome.vuarand@gmail.com).
 
@@ -124,7 +124,7 @@ To use this module:
 
 Note that in the examples here we use the name `pathlib` in the code to reference the module itself and `path` to reference the path datatype. This is to avoid ambiguities. The module name however is `"path"`, and that name should be passed to `require` (as shown above).
 
-All `path` objects are immutable, but they are not interned like Lua strings, and such the semantics when used as keys in tables differ. To create a path object, one can either call the function `pathlib.split` to split a string, or assemble new paths from existing paths using the / operator. An empty `path` object is predefined with the name `pathlib.empty`.
+All `path` objects are immutable, but they are not interned like Lua strings, and as such the semantics when used as keys in tables differ. To create a path object, one can either call the function `pathlib.split` to split a string, or assemble new paths from existing paths using the / operator. An empty `path` object is predefined with the name `pathlib.empty`.
 
 ### pathlib.split ( string )
 
@@ -133,9 +133,10 @@ The `split` function takes a `string` as parameter, and converts it to an equiva
 If the path string following the root starts with a slash or a backslash, it is marked as absolute (UNC paths are always absolute).
 
     local lua = pathlib.split([[/usr/bin/lua]])
-    
+
+A convention used in the rest of this manual is to use the alias `P` for pathlib.split. It is defined as follows:
+
     local P = pathlib.split
-    
     local explorer = P[[C:\Windows\explorer.exe]]
 
 ### pathlib.empty
