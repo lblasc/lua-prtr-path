@@ -1,84 +1,12 @@
-require 'markdown'
-
-local charset = 'UTF-8'
-local file_index = "index.html"
-
--- generate logo
-os.execute('convert -resize 128x128 logo.ps logo.png')
 
 ------------------------------------------------------------------------------
 
-function print(...)
-	local t = {...}
-	for i=1,select('#', ...) do
-		t[i] = tostring(t[i])
-	end
-	io.write(table.concat(t, '\t')..'\n')
-end
-
-function header()
-	print([[
-<?xml version="1.0" encoding="]]..charset..[["?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
-"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
-lang="en">
-<head>
-<title>path @ piratery.net</title>
-<meta http-equiv="Content-Type" content="text/html; charset=]]..charset..[["/>
-<link rel="stylesheet" href="doc.css" type="text/css"/>
-</head>
-<body>
-<div class="chapter" id="header">
-<img width="128" height="128" alt="prtr-path" src="logo.png"/>
-<p>A simple module to manipulate file paths in Lua</p>
-<p class="bar">
-<a href="]]..file_index..[[">home</a> &middot;
-<a href="]]..file_index..[[#installation">installation</a> &middot;
-<a href="]]..file_index..[[#manual">manual</a>
-</p>
-</div>
-]])
-end
-
-function footer()
-	print([[
-<div class="chapter" id="footer">
-<small>Last update: ]]..os.date"%Y-%m-%d %H:%M:%S %Z"..[[</small>
-</div>
-</body>
-</html>
-]])
-end
-
-local chapterid = 0
-
-function chapter(id, title, text, sections, raw)
-	chapterid = chapterid+1
-	local text = text:gsub("%%chapterid%%", tostring(chapterid))
-	if not raw then
-		text = markdown(text)
-	end
-	if sections then
-		for _,section in ipairs(sections) do
-			section = section:gsub("%%chapterid%%", tostring(chapterid))
-			text = text..[[
-<div class="section">
-]]..markdown(section)..[[
-</div>]]
-		end
-	end
-	print([[
-<div class="chapter">
-<a id="]]..id..[["/><h1>]]..tostring(chapterid).." - "..title..[[</h1>
-]]..text..[[
-</div>
-]])
-end
+index {
+	name = 'path',
+	header = [[A simple module to manipulate file paths in Lua]],
+}
 
 ------------------------------------------------------------------------------
-
-io.output(file_index)
 
 header()
 
@@ -248,7 +176,7 @@ footer()
 ------------------------------------------------------------------------------
 
 --[[
-Copyright (c) 2012 Jérôme Vuarand
+Copyright (c) Jérôme Vuarand
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
