@@ -322,13 +322,9 @@ function _M.install()
 	end
 end
 
-function _M.require_wrapped(modname)
-	local resultpath = default_wrappings[modname]
-	if resultpath then
-		return wrapm(require(modname), resultpath, default_wrapped_functions[modname])
-	else
-		return require(modname)
-	end
+function _M.require_wrapped(modname, resultpath)
+	resultpath = resultpath or default_wrappings[modname] or {}
+	return wrapm(require(modname), resultpath, default_wrapped_functions[modname])
 end
 
 if _NAME=='test' then
