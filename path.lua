@@ -249,8 +249,8 @@ local pack = table.pack or function(...)
 end
 local unpack = table.unpack or unpack
 
-function _M.install()
-	local function wrapf(f, resultpath)
+local function wrapf(f, resultpath)
+	if resultpath then
 		return function(...)
 			local args = pack(...)
 			for i=1,args.n do
@@ -258,31 +258,74 @@ function _M.install()
 					args[i] = tostring(args[i])
 				end
 			end
-			if resultpath then
-				local result = pack(f(unpack(args, 1, args.n)))
-				for _,k in ipairs(resultpath) do
-					result[k] = _M.split(result[k])
+			local result = pack(f(unpack(args, 1, args.n)))
+			for _,k in ipairs(resultpath) do
+				result[k] = _M.split(result[k])
+			end
+			return unpack(result, 1, result.n)
+		end
+	else
+		return function(...)
+			local args = pack(...)
+			for i=1,args.n do
+				if _M.type(args[i])=='path' then
+					args[i] = tostring(args[i])
 				end
-				return unpack(result, 1, result.n)
-			else
-				return f(unpack(args, 1, args.n))
 			end
+			return f(unpack(args, 1, args.n))
 		end
 	end
-	local function wrap(mod, resultpath)
-		if not resultpath then resultpath = {} end
-		for k,v in pairs(mod) do
-			if type(v)=='function' then
-				mod[k] = wrapf(v, resultpath[k])
-			end
+end
+
+local function wrapm(mod, resultpath, wrapped_functions)
+	local mod2 = {}
+	if not resultpath then resultpath = {} end
+	for k,v in pairs(mod) do
+		if type(v)=='function' and (not wrapped_functions or wrapped_functions[k]) then
+			mod2[k] = wrapf(v, resultpath[k])
+		else
+			mod2[k] = v
 		end
 	end
-	wrap(require 'io')
-	wrap(require 'lfs', {currentdir = {1}})
-	wrap(require 'os')
-	for _,funcname in ipairs{'loadfile', 'dofile'} do
-		assert(type(_G[funcname])=='function')
-		_G[funcname] = wrapf(_G[funcname])
+	return mod2
+end
+
+local function wrapm_install(mod, resultpath, wrapped_functions)
+	local mod2 = {}
+	if not resultpath then resultpath = {} end
+	for k,v in pairs(mod) do
+		if type(v)=='function' and (not wrapped_functions or wrapped_functions[k]) then
+			mod[k] = wrapf(v, resultpath[k])
+		end
+	end
+end
+
+local default_wrappings = {
+	io = {},
+	lfs = {currentdir = {1}},
+	os = {},
+	_G = {},
+}
+local default_wrapped_functions = {
+	_G = {loadfile=true, dofile=true}
+}
+
+local installed = false
+function _M.install()
+	if not installed then
+		for modname,resultpath in pairs(default_wrappings) do
+			wrapm_install(require(modname), resultpath, default_wrapped_functions[modname])
+		end
+		installed = true
+	end
+end
+
+function _M.require_wrapped(modname)
+	local resultpath = default_wrappings[modname]
+	if resultpath then
+		return wrapm(require(modname), resultpath, default_wrapped_functions[modname])
+	else
+		return require(modname)
 	end
 end
 
