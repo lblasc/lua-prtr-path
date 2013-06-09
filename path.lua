@@ -305,7 +305,7 @@ end
 local default_wrappings = {
 	io = {},
 	lfs = {currentdir = {1}},
-	os = {},
+	os = {tmpname = {1}},
 	_G = {},
 }
 local default_wrapped_functions = {
