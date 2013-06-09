@@ -277,6 +277,8 @@ local function wrapf(f, resultpath)
 	end
 end
 
+_M.wrap = wrapf
+
 local function wrapm(mod, resultpath, wrapped_functions)
 	local mod2 = {}
 	if not resultpath then resultpath = {} end
