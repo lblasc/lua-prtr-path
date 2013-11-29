@@ -70,13 +70,13 @@ function _M.split(s)
 			-- split the root from first element
 			this.root = words[1]:sub(1, 2)
 			words[1] = words[1]:sub(3)
-			this.absolute = false
+			this.absolute = nil
 			for i=1,#words do
 				this[i] = words[i]
 			end
 		else
 			this.root = nil
-			this.absolute = false
+			this.absolute = nil
 			for i=1,#words do
 				this[i] = words[i]
 			end
@@ -234,7 +234,7 @@ function mt:__eq(other)
 	local this = data[self]
 	local that = data[other]
 	local base = this and that
-		and this.absolute==that.absolute
+		and not this.absolute==not that.absolute -- these 'not' account for nil vs. false
 		and this.root==that.root
 		and #this==#that
 	if not base then return false end
@@ -356,7 +356,7 @@ if _NAME=='test' then
 	expect(s:gsub('/', slash), p.string)
 	expect(s:gsub('/', slash), tostring(p))
 	expect(nil, p.root)
-	expect(false, p.absolute)
+	expect(nil, p.absolute)
 	expect(true, p.relative)
 	expect(3, #p)
 	expect('foo', p[1])
@@ -385,7 +385,7 @@ if _NAME=='test' then
 	expect(s:gsub('\\', slash), p.string)
 	expect(s:gsub('\\', slash), tostring(p))
 	expect('C:', p.root)
-	expect(false, p.absolute)
+	expect(nil, p.absolute)
 	expect(true, p.relative)
 	expect(2, #p)
 	expect('foo', p[1])
@@ -413,7 +413,7 @@ if _NAME=='test' then
 	expect(s:gsub('\\', slash), p.string)
 	expect(s:gsub('\\', slash), tostring(p))
 	expect(nil, p.root)
-	expect(false, p.absolute)
+	expect(nil, p.absolute)
 	expect(true, p.relative)
 	expect(2, #p)
 	expect('foo', p[1])
@@ -442,7 +442,7 @@ if _NAME=='test' then
 	expect(s1:gsub('/', slash)..slash..s2:gsub('/', slash), p.string)
 	expect(s1:gsub('/', slash)..slash..s2:gsub('/', slash), tostring(p))
 	expect(nil, p.root)
-	expect(false, p.absolute)
+	expect(nil, p.absolute)
 	expect(4, #p)
 	expect('foo', p[1])
 	expect('bar', p[2])
@@ -502,7 +502,7 @@ if _NAME=='test' then
 	expect(s1:gsub('\\', slash)..slash..s2:gsub('\\', slash), p.string)
 	expect(s1:gsub('\\', slash)..slash..s2:gsub('\\', slash), tostring(p))
 	expect(nil, p.root)
-	expect(false, p.absolute)
+	expect(nil, p.absolute)
 	expect(4, #p)
 	expect('foo', p[1])
 	expect('bar', p[2])
@@ -578,7 +578,7 @@ if _NAME=='test' then
 	expect(s1:gsub('\\', slash)..slash..s2:gsub('\\', slash), p.string)
 	expect(s1:gsub('\\', slash)..slash..s2:gsub('\\', slash), tostring(p))
 	expect('C:', p.root)
-	expect(false, p.absolute)
+	expect(nil, p.absolute)
 	expect(4, #p)
 	expect('foo', p[1])
 	expect('bar', p[2])
