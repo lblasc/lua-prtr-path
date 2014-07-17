@@ -1,17 +1,5 @@
+# 1 - About
 
-------------------------------------------------------------------------------
-
-readme '../README.md'
-index {
-	name = 'path',
-	header = [[A simple module to manipulate file paths in Lua]],
-}
-
-------------------------------------------------------------------------------
-
-header()
-
-chapter('about', "About", [[
 The prtr-path module is a simple Lua module that manipulates file paths. Path objects can be created from strings, and concatenated together using the / operator. Additionally they provide some useful accessors, methods and metamethods.
 
 The name path is not original, but it reflects the purpose of the library. The prtr- prefix (a contraction for piratery.net, the website domain) is used in case some other Linux bindings emerge with the same naming problems.
@@ -28,9 +16,9 @@ This module is written and maintained by [Jérôme Vuarand](mailto:jerome.vuaran
 
 It is available under a [MIT-style license](LICENSE.txt).
 
-]])
 
-chapter('installation', 'Installation', [[
+# 2 - Installation
+
 prtr-path sources are available in its [Mercurial repository](http://hg.piratery.net/path/):
 
     hg clone http://hg.piratery.net/path/
@@ -40,9 +28,9 @@ Tarballs of the latest code can be downloaded directly from there: as [gz](http:
 Finally, I published some rockspecs:
 
     luarocks install prtr-path
-]])
 
-chapter('manual', 'Manual', [=[
+# 3 - Manual
+
 This module revolves around a `path` object type. A `path` can represent the path to a file on the computer filesystem, but hides platform-specific details. It can also represent portions of a URL. At the moment only Unix paths and Windows paths are supported, but more path types may be added on request.
 
 The basic objective of this library is to avoid writing directory separators inside strings in Lua code, to improve the portability of that code. Path strings should be converted to path objects as soon as possible, and from there manipulated using the `path` object facilities.
@@ -170,32 +158,4 @@ In this case the correct syntax would be:
 
     local path = P(os.getenv('HOME)) / '.conf' / appname / (appname..'.cfg')
 
-]=])
 
-footer()
-
-------------------------------------------------------------------------------
-
---[[
-Copyright (c) Jérôme Vuarand
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in
-all copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-THE SOFTWARE.
-]]
-
--- vi: ts=4 sts=4 sw=4 noet
