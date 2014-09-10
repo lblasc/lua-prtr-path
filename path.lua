@@ -631,22 +631,22 @@ if _NAME=='test' then
 	expect([[baz/baf]], p2:sub(1, -1).ustring)
 	expect([[baz]], p2:sub(1, -2).ustring)
 	
-	expect('foo/bar', (split'foo'    / split'bar'   ).ustring)
---	print ((split'foo'    / split'D:bar' ).ustring) -- ambiguous D:foo/bar or D:bar
-	expect('/bar', (split'foo'    / split'/bar'  ).ustring)
-	expect('D:/bar', (split'foo'    / split'D:/bar').ustring)
-	expect('C:foo/bar', (split'C:foo'  / split'bar'   ).ustring)
-	expect('D:bar', (split'C:foo'  / split'D:bar' ).ustring)
---	print ((split'C:foo'  / split'/bar'  ).ustring) -- ambiguous C:/bar or /bar
-	expect('D:/bar', (split'C:foo'  / split'D:/bar').ustring)
-	expect('/foo/bar', (split'/foo'   / split'bar'   ).ustring)
---	print ((split'/foo'   / split'D:bar' ).ustring) -- ambiguous D:/foo/bar or D:bar
-	expect('/bar', (split'/foo'   / split'/bar'  ).ustring)
-	expect('D:/bar', (split'/foo'   / split'D:/bar').ustring)
+	expect('foo/bar',    (split'foo'    / split'bar'   ).ustring)
+--	expect('???',        (split'foo'    / split'D:bar' ).ustring) -- ambiguous D:foo/bar or D:bar
+	expect('/bar',       (split'foo'    / split'/bar'  ).ustring)
+	expect('D:/bar',     (split'foo'    / split'D:/bar').ustring)
+	expect('C:foo/bar',  (split'C:foo'  / split'bar'   ).ustring)
+	expect('D:bar',      (split'C:foo'  / split'D:bar' ).ustring)
+--	expect('???',        (split'C:foo'  / split'/bar'  ).ustring) -- ambiguous C:/bar or /bar
+	expect('D:/bar',     (split'C:foo'  / split'D:/bar').ustring)
+	expect('/foo/bar',   (split'/foo'   / split'bar'   ).ustring)
+--	expect('???',        (split'/foo'   / split'D:bar' ).ustring) -- ambiguous D:/foo/bar or D:bar
+	expect('/bar',       (split'/foo'   / split'/bar'  ).ustring)
+	expect('D:/bar',     (split'/foo'   / split'D:/bar').ustring)
 	expect('C:/foo/bar', (split'C:/foo' / split'bar'   ).ustring)
---	print ((split'C:/foo' / split'D:bar' ).ustring) -- ambiguous D:/foo/bar or D:bar
---	print ((split'C:/foo' / split'/bar'  ).ustring) -- ambiguous C:/bar or /bar
-	expect('D:/bar', (split'C:/foo' / split'D:/bar').ustring)
+--	expect('???',        (split'C:/foo' / split'D:bar' ).ustring) -- ambiguous D:/foo/bar or D:bar
+--	expect('???',        (split'C:/foo' / split'/bar'  ).ustring) -- ambiguous C:/bar or /bar
+	expect('D:/bar',     (split'C:/foo' / split'D:/bar').ustring)
 	
 	assert(not pcall(function() return split'foo'    / split'D:bar' end))
 	assert(select(2, pcall(function() return split'foo'    / split'D:bar' end)):match(': ambiguous path concatenation$'))
@@ -669,8 +669,8 @@ if _NAME=='test' then
 --	expect([[???]],       (split[[\\foo]] / split[[\bar]] ).wstring) -- ambiguous \\bar or \bar
 	expect([[\\bar]],     (split[[\\foo]] / split[[\\bar]]).wstring)
 	
-	expect([[foo\bar]],   ([[foo]]   / split[[bar]]  ).wstring)
-	expect([[foo\bar]],   (split[[foo]]   / [[bar]]  ).wstring)
+	expect([[foo\bar]],   (     [[foo]]   / split[[bar]]  ).wstring)
+	expect([[foo\bar]],   (split[[foo]]   /      [[bar]]  ).wstring)
 	
 	assert(not pcall(function() return split[[\\foo]] / split[[\bar]] end))
 	assert(select(2, pcall(function() return split[[\\foo]] / split[[\bar]] end)):match(': ambiguous path concatenation$'))
@@ -681,12 +681,12 @@ if _NAME=='test' then
 	expect('path', _M.type(_M.empty))
 	expect('', _M.empty.string)
 	
-	local p = _M.split('')
+	local p = split('')
 	expect('', p.string)
 	assert(p==_M.empty)
 	
-	local p1 = _M.split[[foo/bar]]
-	local p2 = _M.split[[foo/bar]]
+	local p1 = split[[foo/bar]]
+	local p2 = split[[foo/bar]]
 	assert(p1 == p2)
 
 	print "all tests succeeded"
