@@ -156,6 +156,28 @@ function getters:relative()
 	return not this.absolute
 end
 
+function getters:canonical()
+	local path = self:sub(0,0)
+	for i=1,#self do
+		local dir = self[i]
+		if dir=='.' then
+			-- ignore
+		elseif dir=='..' and path[#path]~='..' then
+			path = path.dir
+			if not path then
+				if self.relative then
+					path = self:sub(0,0) / '..'
+				else
+					return nil
+				end
+			end
+		else
+			path = path / dir
+		end
+	end
+	return path
+end
+
 function mt:__tostring()
 	local this = data[self]
 	return p2s(this)
@@ -688,6 +710,11 @@ if _NAME=='test' then
 	local p1 = split[[foo/bar]]
 	local p2 = split[[foo/bar]]
 	assert(p1 == p2)
+	
+	expect('foo/bob', split('foo/bar/../bar/./baz/../../bob').canonical.ustring)
+	expect('../../bob', split('../foo/bar/.././../../bob').canonical.ustring)
+	expect(nil, split('/foo/bar/.././../..').canonical)
+	expect('..', split('foo/bar/.././../..').canonical.ustring)
 
 	print "all tests succeeded"
 end
