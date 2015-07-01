@@ -1,5 +1,5 @@
 PREFIX?=/usr
-INSTALL_LUA=$(PREFIX)/share/lua/5.2
+INSTALL_LUA=$(PREFIX)/share/lua/5.3
 
 build:
 
