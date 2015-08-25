@@ -302,8 +302,13 @@ end
 _M.wrap = wrapf
 
 local function wrapm(mod, resultpath, wrapped_functions)
-	local mod2 = {}
 	if not resultpath then resultpath = {} end
+	local mod2 = {}
+	for k,v in pairs(package.loaded) do
+		if v==mod then
+			package.loaded[k..'(path)'] = mod2
+		end
+	end
 	for k,v in pairs(mod) do
 		if type(v)=='function' and (not wrapped_functions or wrapped_functions[k]) then
 			mod2[k] = wrapf(v, resultpath[k])
@@ -316,8 +321,15 @@ end
 
 local function wrapm_install(mod, resultpath, wrapped_functions)
 	if not resultpath then resultpath = {} end
+	local mod0 = {}
+	for k,v in pairs(package.loaded) do
+		if v==mod then
+			package.loaded[k..'(nopath)'] = mod0
+		end
+	end
 	for k,v in pairs(mod) do
 		if type(v)=='function' and (not wrapped_functions or wrapped_functions[k]) then
+			mod0[k] = v
 			mod[k] = wrapf(v, resultpath[k])
 		end
 	end
