@@ -315,7 +315,6 @@ local function wrapm(mod, resultpath, wrapped_functions)
 end
 
 local function wrapm_install(mod, resultpath, wrapped_functions)
-	local mod2 = {}
 	if not resultpath then resultpath = {} end
 	for k,v in pairs(mod) do
 		if type(v)=='function' and (not wrapped_functions or wrapped_functions[k]) then
