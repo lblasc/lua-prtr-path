@@ -208,7 +208,7 @@ local function concat(self, other)
 		other = _M.split(other)
 	end
 	local this,that = data[self],data[other]
-	if not this or not that then error("attempt to concatenate a "..(this and "path" or type(self)).." with a "..(that and "path" or type(other)), 3) end
+	if not this or not that then error("attempt to concatenate a "..(this and "path" or type(self)).." with a "..(that and "path" or type(other)), 2) end
 	local p = {}
 	local case = (this.root and ':' or ' ')
 		.. (this.absolute and '/' or ' ')
