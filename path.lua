@@ -214,7 +214,7 @@ local function concat(self, other)
 		.. (this.absolute and '/' or ' ')
 		.. (that.root and ':' or ' ')
 		.. (that.absolute and '/' or ' ')
-	assert(not ambiguous[case], "ambiguous path concatenation")
+	if ambiguous[case] then error("ambiguous path concatenation", 2) end
 	p.root = that.root or this.root
 	p.absolute = that.absolute or this.absolute
 	if (not that.root or this.root==that.root) and not that.absolute then
