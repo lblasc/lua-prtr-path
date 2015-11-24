@@ -355,10 +355,13 @@ function _M.install()
 	end
 end
 
-function _M.require_wrapped(modname, resultpath)
+function _M.require(modname, resultpath)
 	resultpath = resultpath or default_wrappings[modname] or {}
 	return wrapm(require(modname), resultpath, default_wrapped_functions[modname])
 end
+
+-- backward compatibility
+_M.require_wrapped = _M.require
 
 if _NAME=='test' then
 	local function expect(expectation, value, ...)
