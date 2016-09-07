@@ -46,9 +46,7 @@ function _M.split(s)
 		for word in s:gmatch('[^\\/]+') do
 			table.insert(words, word)
 		end
-		if #words==0 then
-			return _M.empty
-		elseif s:match('^\\\\') then
+		if s:match('^\\\\') then
 			this.root = 'UNC'
 			this.absolute = true
 			for i=1,#words do
@@ -60,6 +58,8 @@ function _M.split(s)
 			for i=1,#words do
 				this[i] = words[i]
 			end
+		elseif #words==0 then
+			return _M.empty
 		elseif words[1]:match('^%a:$') then
 			this.root = words[1]:upper()
 			this.absolute = true
@@ -387,6 +387,20 @@ if _NAME=='test' then
 	assert(p.parent)
 	expect([[/foo]], p.parent.ustring)
 	
+	local s = [[/]]
+	local p = split(s)
+	assert(p ~= _M.empty)
+	expect(s:gsub('/', slash), p.string)
+	expect(s:gsub('/', slash), tostring(p))
+	expect(s, p.ustring)
+	expect(s:gsub('/', '\\'), p.wstring)
+	expect(nil, p.root)
+	expect(true, p.absolute)
+	expect(false, p.relative)
+	expect(0, #p)
+	expect(nil, p[1])
+	assert(not p.parent)
+	
 	local s = [[foo/bar/baz]]
 	local p = split(s)
 	expect(s:gsub('/', slash), p.string)
@@ -416,6 +430,17 @@ if _NAME=='test' then
 	assert(p.parent)
 	expect([[C:\foo]], p.parent.wstring)
 	
+	local s = [[C:\]]
+	local p = split(s)
+	expect(s:gsub('\\', slash), p.string)
+	expect(s:gsub('\\', slash), tostring(p))
+	expect('C:', p.root)
+	expect(true, p.absolute)
+	expect(false, p.relative)
+	expect(0, #p)
+	expect(nil, p[1])
+	assert(not p.parent)
+	
 	local s = [[C:foo\bar]]
 	local p = split(s)
 	expect(s:gsub('\\', slash), p.string)
@@ -444,6 +469,17 @@ if _NAME=='test' then
 	assert(p.parent)
 	expect([[\foo]], p.parent.wstring)
 	
+	local s = [[\]]
+	local p = split(s)
+	expect(s:gsub('\\', slash), p.string)
+	expect(s:gsub('\\', slash), tostring(p))
+	expect(nil, p.root)
+	expect(true, p.absolute)
+	expect(false, p.relative)
+	expect(0, #p)
+	expect(nil, p[1])
+	assert(not p.parent)
+	
 	local s = [[foo\bar]]
 	local p = split(s)
 	expect(s:gsub('\\', slash), p.string)
@@ -471,6 +507,17 @@ if _NAME=='test' then
 	expect(nil, p[3])
 	assert(p.parent)
 	expect([[\\foo]], p.parent.wstring)
+	
+	local s = [[\\]]
+	local p = split(s)
+	expect(s, p.string) --  UNC paths use backslash only
+	expect(s, tostring(p)) --  UNC paths use backslash only
+	expect('UNC', p.root)
+	expect(true, p.absolute)
+	expect(false, p.relative)
+	expect(0, #p)
+	expect(nil, p[1])
+	assert(not p.parent)
 	
 	local s1,s2 = [[foo/bar]],[[baz/baf]]
 	local p1,p2 = split(s1),split(s2)
