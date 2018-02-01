@@ -20,7 +20,7 @@ local newproxy = newproxy or function(proto)
 end
 
 local prototype = newproxy(true)
-local data = setmetatable({}, nil)
+local data = setmetatable({}, {__mode='k'})
 local mt = getmetatable(prototype)
 local methods = {}
 local getters = {}
